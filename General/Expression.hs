@@ -19,12 +19,6 @@ import Data.List
 data Term = Term {coefficient :: Int, variable :: [String]} deriving (Eq)
 newtype Expression = Expression [Term]
 
-getVariable :: Term -> [String]
-getVariable (Term a xs) = xs
-
-getCoefficient :: Term -> Int
-getCoefficient (Term a xs) = a
-
 alphabetiseVariablesInTerm :: Term -> Term
 alphabetiseVariablesInTerm (Term a xs) = Term a (sort xs)
 
@@ -47,10 +41,10 @@ getRepeatedVariables :: Expression -> [[String]]
 getRepeatedVariables (Expression xs) = nub (variablesIncludingRepeats \\ variablesExcludingRepeats)
   where
     variablesExcludingRepeats = getAllVariables (Expression xs)
-    variablesIncludingRepeats = [getVariable x | x <- xs]
+    variablesIncludingRepeats = [variable x | x <- xs]
 
 getAllVariables :: Expression -> [[String]]
-getAllVariables (Expression xs) = nub [getVariable x | x <- xs]
+getAllVariables (Expression xs) = nub [variable x | x <- xs]
 
 alphabetiseVariablesInExpression :: Expression -> Expression
 alphabetiseVariablesInExpression (Expression xs) = Expression [alphabetiseVariablesInTerm x | x <- xs]
@@ -78,7 +72,7 @@ simplifyLikeTermsWithoutZeros (Expression (firstTerm : xs)) = Expression [foldl 
     nonMatchingTerms = xs \\ matchingTerms
 
 simplifyZeroTerms :: Expression -> Expression
-simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, getCoefficient x /= 0])
+simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, coefficient x /= 0])
   where
     zeroTerm = Term 0 []
 
