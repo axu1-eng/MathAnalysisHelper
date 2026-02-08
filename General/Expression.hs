@@ -20,9 +20,6 @@ normalizeTerm (Term a xs) = Term a (sort xs)
 isZero :: Term -> Bool
 isZero (Term coef _) = coef == 0
 
-scalarMultiplyTerm :: Int -> Term -> Term
-scalarMultiplyTerm a (Term b xs) = Term (a * b) xs
-
 multiplyTerm :: Term -> Term -> Term
 multiplyTerm (Term a xs) (Term b ys) = Term (a * b) (xs <> ys)
 
@@ -40,7 +37,7 @@ addExpression :: Expression -> Expression -> Expression
 addExpression (Expression a) (Expression b) = simplifyLikeTerms $ Expression (a <> b)
 
 scalarMultiplyExpression :: Int -> Expression -> Expression
-scalarMultiplyExpression a (Expression xs) = simplifyZeroTerms (Expression [scalarMultiplyTerm a x | x <- xs])
+scalarMultiplyExpression a (Expression xs) = simplifyZeroTerms $ Expression [Term (a * coef) vars | Term coef vars <- xs]
 
 multiplyExpression :: Expression -> Expression -> Expression
 multiplyExpression (Expression xs) (Expression ys) = simplifyLikeTerms (Expression [x `multiplyTerm` y | x <- xs, y <- ys])
