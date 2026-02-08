@@ -26,9 +26,6 @@ scalarMultiplyTerm a (Term b xs) = Term (a * b) xs
 multiplyTerm :: Term -> Term -> Term
 multiplyTerm (Term a xs) (Term b ys) = Term (a * b) (xs <> ys)
 
-addExpressionWithoutSimplifying :: Expression -> Expression -> Expression
-addExpressionWithoutSimplifying (Expression xs) (Expression ys) = Expression (xs <> ys)
-
 simplifyZeroTerms :: Expression -> Expression
 simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, coefficient x /= 0])
 
@@ -40,7 +37,7 @@ simplifyLikeTerms (Expression terms) =
     sumGroup groups@(g : _) = Term (sum $ map coefficient groups) (variables g)
 
 addExpression :: Expression -> Expression -> Expression
-addExpression a b = simplifyLikeTerms (simplifyLikeTerms a `addExpressionWithoutSimplifying` simplifyLikeTerms b)
+addExpression (Expression a) (Expression b) = simplifyLikeTerms $ Expression (a <> b)
 
 scalarMultiplyExpression :: Int -> Expression -> Expression
 scalarMultiplyExpression a (Expression xs) = simplifyZeroTerms (Expression [scalarMultiplyTerm a x | x <- xs])
