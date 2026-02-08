@@ -1,28 +1,20 @@
 module LinearAlgebra.Vectors
 (
-dot,
-isOrthogonal,
-determinant,
+Vector(..),
+addVector,
 ) where
 
-dot :: [Int] -> [Int] -> Int
-dot [a] [b] = a * b
-dot xs ys = head xs * head ys + dot (tail xs) (tail ys) 
+import qualified General.Expression as Exp
 
-isOrthogonal :: [Int] -> [Int] -> Bool
-isOrthogonal xs ys 
-	| dot xs ys == 0 = True
-	| otherwise = False
+data Vector a = Vector [a] deriving (Show)
 
-eliminateRowsAndColumns :: [[Int]] -> Int -> Int-> [[Int]]
-eliminateRowsAndColumns xxs = 
+vectorAppend :: Vector a -> Vector a -> Vector a
+(Vector xs) `vectorAppend` (Vector ys) = Vector (xs ++ ys)
 
-determinant :: [[Int]] -> Int
-determinant xxs 
-	| rowLength /= columnLength = error "Row length must equal column length for a determinant."
-	| otherwise = properDeterminant xxs
-	where 
-		rowLength = length xxs
-		columnLength = length (head xxs)
-		properDeterminant [[a]] = a
-		properDeterminant 
+addVectorNums :: (Num a) => Vector a -> Vector a -> Vector a
+(Vector []) `addVectorNums` (Vector []) = Vector []
+(Vector []) `addVectorNums` (Vector _) = error "Cannot add vectors of different dimensions"
+(Vector _) `addVectorNums` (Vector []) = error "Cannot add vectors of different dimensions"
+(Vector (x:xs)) `addVectorNums` (Vector (y:ys)) = Vector [x+y] `vectorAppend` ((Vector xs) `addVector` (Vector ys))
+
+--addVectorExpressions :: (Exp.Expression a) => Vector a -> Vector a -> Vector a1

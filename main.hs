@@ -1,4 +1,5 @@
 import qualified General.Expression as Exp
+import qualified LinearAlgebra.Vectors as Vec
 
 main :: IO ()
 main = do
@@ -16,6 +17,9 @@ main = do
     let exp6 = Exp.Expression [Exp.Term (4) ["neuf","b1"],Exp.Term 2 ["b7"]]
     let aPlusb = Exp.Expression [Exp.Term 1 ["a"],Exp.Term 1 ["b"]]
     let aMinusb = Exp.Expression [Exp.Term 1 ["a"],Exp.Term (-1) ["b"]]
+    
+    let v1 = Vec.Vector [1,2,3]
+    let v2 = Vec.Vector [0,7,3]
 --    print $ Exp.addTerm twoa1 threea1
 --    print $ Exp.addTerm zeroTerm twoa1
 --    print $ Exp.addTerm twoa1 zeroTerm
@@ -26,6 +30,8 @@ main = do
 --    print $ Exp.simplifyLikeTerms exp2
 --    print $ Exp.simplifyLikeTerms exp3
 --    print $ Exp.simplifyLikeTerms exp4
-    print $ exp5 `Exp.addExpression` exp6
-    print $ Exp.scalarMultiplyExpression 9 exp6
-    print $ aPlusb `Exp.multiplyExpression` aMinusb
+--    print $ exp5 `Exp.addExpression` exp6
+--    print $ Exp.scalarMultiplyExpression 9 exp6
+--    print $ aPlusb `Exp.multiplyExpression` aMinusb
+    
+    print $ v1 `Vec.addVector` v2

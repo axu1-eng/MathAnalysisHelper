@@ -26,18 +26,18 @@ getCoefficient :: Term -> Int
 getCoefficient (Term a xs) = a
 
 alphabetiseVariablesInTerm :: Term -> Term
-alphabetiseVariablesInTerm (Term a xs) = Term a (sort xs) 
+alphabetiseVariablesInTerm (Term a xs) = Term a (sort xs)
 
 addTerm :: Term -> Term -> Term
-(Term a xs) `addTerm` (Term b ys) 
+(Term a xs) `addTerm` (Term b ys)
     | (Term a xs) == zeroTerm = (Term b ys)
     | (Term b ys) == zeroTerm = (Term a xs)
     | xs == ys = Term (a+b) xs
-    | otherwise = zeroTerm 
+    | otherwise = zeroTerm
         where zeroTerm = Term 0 [""]
 
 scalarMultiplyTerm :: Int -> Term -> Term
-scalarMultiplyTerm a (Term b xs) = Term (a*b) xs 
+scalarMultiplyTerm a (Term b xs) = Term (a*b) xs
 
 multiplyTerm :: Term -> Term -> Term
 multiplyTerm (Term a xs) (Term b ys) = Term (a*b) (xs ++ ys)
