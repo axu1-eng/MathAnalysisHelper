@@ -17,7 +17,7 @@ module General.Expression (
 import Data.List
 
 data Term = Term {coefficient :: Int, variable :: [String]} deriving (Eq)
-data Expression = Expression [Term]
+newtype Expression = Expression [Term]
 
 getVariable :: Term -> [String]
 getVariable (Term a xs) = xs
