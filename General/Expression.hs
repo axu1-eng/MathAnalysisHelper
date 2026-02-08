@@ -11,6 +11,7 @@ findNonAddableTerms,
 simplifyLikeTerms,
 addExpression,
 scalarMultiplyExpression,
+subtractExpression,
 multiplyExpression,
 ) where
 
@@ -89,6 +90,9 @@ addExpression a b = simplifyLikeTerms(simplifyLikeTerms(a) `addExpressionWithout
 scalarMultiplyExpression :: Int -> Expression -> Expression
 scalarMultiplyExpression a (Expression xs) = simplifyZeroTerms(Expression [scalarMultiplyTerm a x | x <- xs])
 
+subtractExpression :: Expression -> Expression -> Expression
+a `subtractExpression` b = a `addExpression` (scalarMultiplyExpression (-1) b)
+
 multiplyExpression :: Expression -> Expression -> Expression
 multiplyExpression (Expression xs) (Expression ys) = simplifyLikeTerms(Expression [x `multiplyTerm` y | x <- xs, y <- ys])
 
@@ -96,4 +100,6 @@ instance Show Term where
     show (Term coeff vars) = show coeff ++ intercalate "" ["(" ++ (x) ++ ")" | x <- vars]
 
 instance Show Expression where
-    show (Expression xs) = intercalate " + " [show x | x <- xs]
+    show (Expression xs) 
+        | xs == [] = "0"
+        | otherwise = intercalate " + " [show x | x <- xs]
