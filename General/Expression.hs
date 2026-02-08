@@ -35,7 +35,7 @@ addTerm :: Term -> Term -> Term
     | xs == ys = Term (a + b) xs
     | otherwise = zeroTerm
   where
-    zeroTerm = Term 0 [""]
+    zeroTerm = Term 0 []
 
 scalarMultiplyTerm :: Int -> Term -> Term
 scalarMultiplyTerm a (Term b xs) = Term (a * b) xs
@@ -61,26 +61,26 @@ addExpressionWithoutSimplifying (Expression xs) (Expression ys) = Expression ((x
 findAddableTerms :: Term -> Expression -> Expression
 findAddableTerms a (Expression xs) = Expression [x | x <- xs, x `addTerm` a /= zeroTerm]
   where
-    zeroTerm = Term 0 [""]
+    zeroTerm = Term 0 []
 
 findNonAddableTerms :: Term -> Expression -> Expression
 findNonAddableTerms a (Expression xs) = Expression [x | x <- xs, x `addTerm` a == zeroTerm]
   where
-    zeroTerm = Term 0 [""]
+    zeroTerm = Term 0 []
 
 simplifyLikeTermsWithoutZeros :: Expression -> Expression
 simplifyLikeTermsWithoutZeros (Expression []) = Expression []
 simplifyLikeTermsWithoutZeros (Expression [term]) = Expression [term]
 simplifyLikeTermsWithoutZeros (Expression (firstTerm : xs)) = Expression [(foldl addTerm firstTerm matchingTerms)] `addExpressionWithoutSimplifying` simplifyLikeTermsWithoutZeros (Expression nonMatchingTerms)
   where
-    zeroTerm = Term 0 [""]
+    zeroTerm = Term 0 []
     matchingTerms = [x | x <- xs, x `addTerm` firstTerm /= zeroTerm]
     nonMatchingTerms = xs \\ matchingTerms
 
 simplifyZeroTerms :: Expression -> Expression
 simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, getCoefficient (x) /= 0])
   where
-    zeroTerm = Term 0 [""]
+    zeroTerm = Term 0 []
 
 simplifyLikeTerms :: Expression -> Expression
 simplifyLikeTerms a = simplifyZeroTerms (simplifyLikeTermsWithoutZeros (alphabetiseVariablesInExpression (simplifyZeroTerms (a))))

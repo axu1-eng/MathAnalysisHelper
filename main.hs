@@ -3,7 +3,7 @@ import qualified LinearAlgebra.Vectors as Vec
 
 main :: IO ()
 main = do
-    let zeroTerm = Exp.Term 0 [""]
+    let zeroTerm = Exp.Term 0 []
     let twoa1 = Exp.Term 2 ["a1"]
     let threea1 = Exp.Term 3 ["a1"]
     let threeb1 = Exp.Term 3 ["b1"]
@@ -11,8 +11,8 @@ main = do
     let tenb2 = Exp.Term 10 ["b2"]
     let exp1 = Exp.Expression [Exp.Term 2 ["a1"], Exp.Term 3 ["a1"], Exp.Term 3 ["b1"], Exp.Term 9 ["b1"], Exp.Term 10 ["b2"]]
     let exp2 = Exp.Expression [Exp.Term 0 ["a1"], Exp.Term 3 ["b1"], Exp.Term 3 ["a1"], Exp.Term 10 ["b2"], Exp.Term 9 ["b1"]]
-    let exp3 = Exp.Expression [Exp.Term 2 ["a1"], Exp.Term 3 ["b1"], Exp.Term 0 [""], Exp.Term 3 ["a1"], Exp.Term 10 ["b2"], Exp.Term 9 ["b1"]]
-    let exp4 = Exp.Expression [Exp.Term 0 [""], Exp.Term 2 ["a1"], Exp.Term 3 ["b1"], Exp.Term 3 ["a1"], Exp.Term 10 ["b2"], Exp.Term 9 ["b1"]]
+    let exp3 = Exp.Expression [Exp.Term 2 ["a1"], Exp.Term 3 ["b1"], Exp.Term 0 [], Exp.Term 3 ["a1"], Exp.Term 10 ["b2"], Exp.Term 9 ["b1"]]
+    let exp4 = Exp.Expression [Exp.Term 0 [], Exp.Term 2 ["a1"], Exp.Term 3 ["b1"], Exp.Term 3 ["a1"], Exp.Term 10 ["b2"], Exp.Term 9 ["b1"]]
     let exp5 = Exp.Expression [Exp.Term 7 ["a2", "a1"], Exp.Term 4 ["b1", "neuf"], Exp.Term 3 ["a1", "a2"], Exp.Term 0 ["a"], Exp.Term 1 ["a"]]
     let exp6 = Exp.Expression [Exp.Term (4) ["neuf", "b1"], Exp.Term 2 ["b7"]]
     let aPlusb = Exp.Expression [Exp.Term 1 ["a"], Exp.Term 1 ["b"]]
