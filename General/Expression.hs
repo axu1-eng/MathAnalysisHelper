@@ -1,7 +1,6 @@
 module General.Expression (
     Term (..),
-    Expression (..),
-    simplifyLikeTerms,
+    makeExpr,
     addExpression,
     scalarMultiplyExpression,
     multiplyExpression,
@@ -41,6 +40,9 @@ scalarMultiplyExpression a (Expression xs) = simplifyZeroTerms $ Expression [Ter
 
 multiplyExpression :: Expression -> Expression -> Expression
 multiplyExpression (Expression xs) (Expression ys) = simplifyLikeTerms (Expression [x `multiplyTerm` y | x <- xs, y <- ys])
+
+makeExpr :: [Term] -> Expression
+makeExpr = simplifyLikeTerms . Expression
 
 instance Show Term where
     show (Term coeff vars) = show coeff <> intercalate "" ["(" <> x <> ")" | x <- vars]
