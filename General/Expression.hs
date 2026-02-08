@@ -24,10 +24,10 @@ scalarMultiplyTerm :: Int -> Term -> Term
 scalarMultiplyTerm a (Term b xs) = Term (a * b) xs
 
 multiplyTerm :: Term -> Term -> Term
-multiplyTerm (Term a xs) (Term b ys) = Term (a * b) (xs ++ ys)
+multiplyTerm (Term a xs) (Term b ys) = Term (a * b) (xs <> ys)
 
 addExpressionWithoutSimplifying :: Expression -> Expression -> Expression
-addExpressionWithoutSimplifying (Expression xs) (Expression ys) = Expression (xs ++ ys)
+addExpressionWithoutSimplifying (Expression xs) (Expression ys) = Expression (xs <> ys)
 
 simplifyZeroTerms :: Expression -> Expression
 simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, coefficient x /= 0])
@@ -49,7 +49,7 @@ multiplyExpression :: Expression -> Expression -> Expression
 multiplyExpression (Expression xs) (Expression ys) = simplifyLikeTerms (Expression [x `multiplyTerm` y | x <- xs, y <- ys])
 
 instance Show Term where
-    show (Term coeff vars) = show coeff ++ intercalate "" ["(" ++ x ++ ")" | x <- vars]
+    show (Term coeff vars) = show coeff <> intercalate "" ["(" <> x <> ")" | x <- vars]
 
 instance Show Expression where
     show (Expression xs) = intercalate " + " [show x | x <- xs]
