@@ -14,6 +14,7 @@ module General.Expression (
     multiplyExpression,
 ) where
 
+import Data.Function (on)
 import Data.List
 import Data.Maybe (isJust, isNothing)
 
@@ -73,8 +74,12 @@ simplifyLikeTermsWithoutZeros (Expression (firstTerm : xs)) =
 simplifyZeroTerms :: Expression -> Expression
 simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, coefficient x /= 0])
 
-simplifyLikeTerms :: Expression -> Expression
-simplifyLikeTerms a = simplifyZeroTerms (simplifyLikeTermsWithoutZeros (alphabetiseVariablesInExpression (simplifyZeroTerms a)))
+simplifyLikeTerms (Expression terms) =
+    Expression . filter (not . isZero) . map sumGroup . groupTerms $ terms
+  where
+    groupTerms = groupBy ((==) `on` variables) . sortBy (compare `on` variables) . map alphabetiseVariablesInTerm
+    sumGroup [] = Term 0 []
+    sumGroup groups@(g : _) = Term (sum $ map coefficient groups) (variables g)
 
 addExpression :: Expression -> Expression -> Expression
 addExpression a b = simplifyLikeTerms (simplifyLikeTerms a `addExpressionWithoutSimplifying` simplifyLikeTerms b)
