@@ -1,7 +1,6 @@
-module LinearAlgebra.Vectors
-(
-Vector(..),
-addVector,
+module LinearAlgebra.Vectors (
+    Vector (..),
+    addVector,
 ) where
 
 import qualified General.Expression as Exp
@@ -15,6 +14,6 @@ addVectorNums :: (Num a) => Vector a -> Vector a -> Vector a
 (Vector []) `addVectorNums` (Vector []) = Vector []
 (Vector []) `addVectorNums` (Vector _) = error "Cannot add vectors of different dimensions"
 (Vector _) `addVectorNums` (Vector []) = error "Cannot add vectors of different dimensions"
-(Vector (x:xs)) `addVectorNums` (Vector (y:ys)) = Vector [x+y] `vectorAppend` ((Vector xs) `addVector` (Vector ys))
+(Vector (x : xs)) `addVectorNums` (Vector (y : ys)) = Vector [x + y] `vectorAppend` ((Vector xs) `addVector` (Vector ys))
 
---addVectorExpressions :: (Exp.Expression a) => Vector a -> Vector a -> Vector a1
+-- addVectorExpressions :: (Exp.Expression a) => Vector a -> Vector a -> Vector a1
