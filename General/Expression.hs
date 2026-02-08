@@ -22,14 +22,15 @@ newtype Expression = Expression [Term]
 alphabetiseVariablesInTerm :: Term -> Term
 alphabetiseVariablesInTerm (Term a xs) = Term a (sort xs)
 
+isZero :: Term -> Bool
+isZero (Term coef _) = coef == 0
+
 addTerm :: Term -> Term -> Term
 (Term a xs) `addTerm` (Term b ys)
-    | Term a xs == zeroTerm = Term b ys
-    | Term b ys == zeroTerm = Term a xs
+    | isZero (Term a xs) = Term b ys
+    | isZero (Term b ys) = Term a xs
     | xs == ys = Term (a + b) xs
-    | otherwise = zeroTerm
-  where
-    zeroTerm = Term 0 []
+    | otherwise = Term 0 []
 
 scalarMultiplyTerm :: Int -> Term -> Term
 scalarMultiplyTerm a (Term b xs) = Term (a * b) xs
@@ -53,14 +54,10 @@ addExpressionWithoutSimplifying :: Expression -> Expression -> Expression
 addExpressionWithoutSimplifying (Expression xs) (Expression ys) = Expression (xs ++ ys)
 
 findAddableTerms :: Term -> Expression -> Expression
-findAddableTerms a (Expression xs) = Expression [x | x <- xs, x `addTerm` a /= zeroTerm]
-  where
-    zeroTerm = Term 0 []
+findAddableTerms a (Expression xs) = Expression [x | x <- xs, (not . isZero) (x `addTerm` a)]
 
 findNonAddableTerms :: Term -> Expression -> Expression
-findNonAddableTerms a (Expression xs) = Expression [x | x <- xs, x `addTerm` a == zeroTerm]
-  where
-    zeroTerm = Term 0 []
+findNonAddableTerms a (Expression xs) = Expression [x | x <- xs, isZero (x `addTerm` a)]
 
 simplifyLikeTermsWithoutZeros :: Expression -> Expression
 simplifyLikeTermsWithoutZeros (Expression []) = Expression []
@@ -73,8 +70,6 @@ simplifyLikeTermsWithoutZeros (Expression (firstTerm : xs)) = Expression [foldl 
 
 simplifyZeroTerms :: Expression -> Expression
 simplifyZeroTerms (Expression xs) = Expression ([x | x <- xs, coefficient x /= 0])
-  where
-    zeroTerm = Term 0 []
 
 simplifyLikeTerms :: Expression -> Expression
 simplifyLikeTerms a = simplifyZeroTerms (simplifyLikeTermsWithoutZeros (alphabetiseVariablesInExpression (simplifyZeroTerms a)))
